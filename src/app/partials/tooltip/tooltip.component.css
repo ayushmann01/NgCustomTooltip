@@ -1,15 +1,16 @@
 .tooltip {
-  position: fixed;
-  background-color: black;
+  border: 1px solid black;
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.05);
+  background-color: #fbfbfb;
   border-radius: 4px;
-  color: #ffffff;
-  font-family: Arial;
-  padding: 3px 6px;
-  font-size: 13px;
-  margin-top: 5px;
-  transform: translateX(-50%);
+  color: black;
   display: flex;
+  font: 13px "Helvetica Neue", sans-serif;
   flex-direction: column;
+  margin-top: 5px;
+  position: fixed;
+  padding: 0.5rem;
+  transform: translateX(-50%);
 
   &::before {
     content: "";
@@ -25,5 +26,10 @@
 }
 
 .tooltip p {
-    margin: 0;
+  margin: 0;
+}
+
+.secondary {
+  color: #636363;
+  text-align: end;
 }

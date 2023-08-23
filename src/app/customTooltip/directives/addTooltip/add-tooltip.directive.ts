@@ -9,6 +9,7 @@ import {
   HostListener,
   Injector,
   Input,
+  ViewContainerRef,
 } from '@angular/core';
 import { TooltipConfig } from '../../interfaces/tooltip-config';
 import { Tooltip } from '../../interfaces/tooltip';
@@ -46,12 +47,37 @@ export class AddTooltipDirective {
 
   private setTooltipComponentProperties() {
     if (this.componentRef !== null) {
-      this.componentRef.instance.tooltipData = this.tooltipConfigs.inputData?.data;
-      const { left, right, bottom } =
+      this.componentRef.instance.tooltipData =
+        this.tooltipConfigs.inputData?.data;
+      const { left, right, bottom, top } =
         this.elementRef.nativeElement.getBoundingClientRect();
-      this.componentRef.instance.left = left * left;
-      this.componentRef.instance.top = bottom;
-      // this.componentRef.instance. = bottom;
+      switch (this.tooltipConfigs.position) {
+        case 'bottom': {
+          this.componentRef.instance.left = Math.round(
+            (right - left) / 2 + left
+          );
+          this.componentRef.instance.top = Math.round(bottom);
+          break;
+          break;
+        }
+        case 'top': {
+          this.componentRef.instance.left = Math.round(
+            (right - left) / 2 + left
+          );
+          this.componentRef.instance.top = Math.round(top);
+          break;
+        }
+        case 'right': {
+          this.componentRef.instance.left = Math.round(right);
+          this.componentRef.instance.top = Math.round(top + (bottom - top) / 2);
+          break;
+        }
+        case 'left': {
+          this.componentRef.instance.left = Math.round(left);
+          this.componentRef.instance.top = Math.round(top + (bottom - top) / 2);
+          break;
+        }
+      }
     }
   }
 

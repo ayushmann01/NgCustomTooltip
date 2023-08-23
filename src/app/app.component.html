@@ -1,12 +1,18 @@
-<div
-  appAddTooltip
-  [tooltipConfigs]="{
-    component: toolTipComponent,
-    inputData: {
-      data: data
-    },
-    position: 'bottom'
-  }"
->
-  Hello World!
-</div>
+<section class="container">
+  <h1>Custom Tooltip Demo</h1>
+  <div class="wrapper">
+    <p
+      id="example-element"
+      appAddTooltip
+      [tooltipConfigs]="{
+        component: toolTipComponent,
+        inputData: {
+          data: data
+        },
+        position: 'bottom'
+      }"
+    >
+      Hover me to see the tooltip!
+    </p>
+  </div>
+</section>

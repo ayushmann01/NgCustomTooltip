@@ -6,7 +6,5 @@ export type InputData = {
 export interface Tooltip {
   data?: InputData;
   left: number;
-  bottom: number;
-  right: number;
   top: number;
 }

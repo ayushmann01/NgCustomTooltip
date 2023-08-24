@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { TooltipComponent } from './partials/tooltip/tooltip.component';
-import { TooltipConfig } from './customTooltip/interfaces/tooltip-config';
 import { InputData } from './customTooltip/interfaces/tooltip';
+import { TooltipPosition } from './customTooltip/utils/constants';
+import { PositionOptions } from './customTooltip/interfaces/tooltip-config';
 
 @Component({
   selector: 'app-root',
@@ -16,17 +17,10 @@ export class AppComponent {
     city: 'Noida',
   };
 
+  tooltipPosition: PositionOptions = 'bottom'; // set default tooltip position to bottom
+
+  positions = Object.values(TooltipPosition).filter((p: any) => isNaN(p));
+
   toolTipComponent = TooltipComponent;
 }
 
-// type InputData = {
-//   name: string;
-//   city: string;
-// };
-// export interface Tooltip {
-//   left?: number;
-//   bottom?: number;
-//   top?: number;
-//   right?: number;
-//   tooltipData: InputData;
-// }

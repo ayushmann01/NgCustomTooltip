@@ -4,10 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { TooltipComponent } from './partials/tooltip/tooltip.component';
 import { CustomTooltipModule } from './customTooltip/customtooltip.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, TooltipComponent],
-  imports: [BrowserModule, CustomTooltipModule],
+  imports: [BrowserModule, CustomTooltipModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

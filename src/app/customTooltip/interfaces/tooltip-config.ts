@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 
-type PositionOptions = 'left' | 'right' | 'top' | 'bottom';
+export type PositionOptions = 'left' | 'right' | 'top' | 'bottom';
 
 
 export interface TooltipConfig<T> {

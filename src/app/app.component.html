@@ -1,6 +1,17 @@
 <section class="container">
   <h1>Custom Tooltip Demo</h1>
-  <div class="wrapper">
+  <div class="input-wrapper">
+    <label for="position-select">Tooltip Position</label>
+    <select
+      [(ngModel)]="tooltipPosition"
+      class="input-select"
+      name="select-position"
+      id="position-select"
+    >
+      <option *ngFor="let pos of positions" [value]="pos">{{ pos }}</option>
+    </select>
+  </div>
+  <div>
     <p
       id="example-element"
       appAddTooltip
@@ -9,10 +20,11 @@
         inputData: {
           data: data
         },
-        position: 'bottom'
+        position: tooltipPosition
       }"
     >
       Hover me to see the tooltip!
     </p>
   </div>
 </section>
+<!-- <h1>hello</h1> -->

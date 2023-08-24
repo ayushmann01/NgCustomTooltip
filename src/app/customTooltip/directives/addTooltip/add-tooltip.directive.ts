@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { TooltipConfig } from '../../interfaces/tooltip-config';
 import { Tooltip } from '../../interfaces/tooltip';
+import { TooltipPosition } from '../../utils/constants';
 
 @Directive({
   selector: '[appAddTooltip]',

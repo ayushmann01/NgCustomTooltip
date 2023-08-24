@@ -13,11 +13,11 @@ export class AppComponent {
   title = 'ng-custom-tooltip';
 
   data: InputData = {
-    name: 'user name',
+    name: 'Namaste 🙂',
     city: 'Noida',
   };
 
-  tooltipPosition: PositionOptions = 'bottom'; // set default tooltip position to bottom
+  tooltipPosition: PositionOptions = TooltipPosition.bottom as unknown as  PositionOptions; // set default tooltip position to bottom
 
   positions = Object.values(TooltipPosition).filter((p: any) => isNaN(p));
 

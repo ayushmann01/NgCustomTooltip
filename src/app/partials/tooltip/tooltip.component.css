@@ -1,35 +1,26 @@
+:host {
+  display: block;
+}
+
 .tooltip {
-  border: 1px solid black;
-  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.05);
-  background-color: #fbfbfb;
-  border-radius: 4px;
-  color: black;
-  display: flex;
-  font: 13px "Helvetica Neue", sans-serif;
-  flex-direction: column;
-  margin-top: 5px;
-  position: fixed;
-  padding: 0.5rem;
-  transform: translateX(-50%);
-
-  &::before {
-    content: "";
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 5px solid black;
-    position: absolute;
-    left: calc(50% - 5px);
-    top: -5px;
-  }
+  /* tooltip styling */
+  --tooltip-font: 12px sans-serif;
+  --tooltip-bg-color: black;
+  --tooltip-color: var(--offwhite);
+  --tooltip-max-width: 300px;
+  --tooltip-border: 1px solid #6e7681;
+  background-color: var(--tooltip-bg-color);
+  box-shadow: 0 0 transparent !important;
+  border: var(--tooltip-border);
+  border-radius: 8px;
+  color: var(--tooltip-color);
+  font: var(--tooltip-font);
+  max-width: var(--tooltip-max-width);
+  padding: 0.5rem 0.5rem;
+  opacity: 1;
 }
 
-.tooltip p {
-  margin: 0;
-}
-
-.secondary {
-  color: #636363;
-  text-align: end;
+/* makes first letter uppercase */
+.tooltip::first-letter {
+  text-transform: uppercase;
 }

@@ -1,85 +1,71 @@
 import {
-  ApplicationRef,
-  Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
-  EmbeddedViewRef,
   HostListener,
-  Injector,
   Input,
-  ViewContainerRef,
+  OnInit,
 } from '@angular/core';
-import { TooltipConfig } from '../../interfaces/tooltip-config';
-import { Tooltip } from '../../interfaces/tooltip';
-import { TooltipPosition } from '../../utils/constants';
+import { TooltipComponent } from 'src/app/partials/tooltip/tooltip.component';
+import {
+  Overlay,
+  OverlayPositionBuilder,
+  OverlayRef,
+} from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 
 @Directive({
-  selector: '[appAddTooltip]',
+  selector: '[tooltip]',
 })
-export class AddTooltipDirective {
-  @Input() tooltipConfigs!: TooltipConfig<Tooltip>;
+export class AddTooltipDirective implements OnInit {
+  @Input('tooltip') text: string = '';
 
-  private componentRef: ComponentRef<any> | null = null;
+  private overlayRef!: OverlayRef;
+
+  // To dyanmically apply tooltip component
+  // @Input() tooltipConfigs!: Tooltip;
+  // toolTipComponent = this.tooltipConfigs?.component
+  //   ? this.tooltipConfigs.component
+  //   : TooltipComponent;
 
   constructor(
     private elementRef: ElementRef,
-    private appRef: ApplicationRef,
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private injector: Injector
+    private overlayPositionBuilder: OverlayPositionBuilder,
+    private overlay: Overlay
   ) {}
+  ngOnInit(): void {
+    const positionStrategy = this.overlayPositionBuilder
+      // Create position attached to the elementRef
+      .flexibleConnectedTo(this.elementRef)
+      // Describe how to connect overlay to the elementRef
+      // Means, attach overlay's center bottom point to the
+      // top center point of the elementRef.
+      .withPositions([
+        {
+          originX: 'center',
+          originY: 'top',
+          overlayX: 'center',
+          overlayY: 'bottom',
+          offsetY: -8,
+        },
+      ]);
+    this.overlayRef = this.overlay.create({ positionStrategy });
+  }
 
   @HostListener('mouseenter')
   onMouseEnter(): void {
-    if (this.componentRef === null) {
-      const componentFactory =
-        this.componentFactoryResolver.resolveComponentFactory(
-          this.tooltipConfigs.component
-        );
-      this.componentRef = componentFactory.create(this.injector);
-      this.appRef.attachView(this.componentRef.hostView);
-      const domElem = (this.componentRef.hostView as EmbeddedViewRef<any>)
-        .rootNodes[0] as HTMLElement;
-      document.body.appendChild(domElem);
-      this.setTooltipComponentProperties();
-    }
-  }
+    const tooltipPortal = new ComponentPortal(TooltipComponent);
 
-  private setTooltipComponentProperties() {
-    if (this.componentRef !== null) {
-      this.componentRef.instance.tooltipData =
-        this.tooltipConfigs.inputData?.data;
-      const { left, right, bottom, top } =
-        this.elementRef.nativeElement.getBoundingClientRect();
-      switch (this.tooltipConfigs.position) {
-        case 'bottom': {
-          this.componentRef.instance.left = Math.round(
-            (right - left) / 2 + left
-          );
-          this.componentRef.instance.top = Math.round(bottom);
-          break;
-          break;
-        }
-        case 'top': {
-          this.componentRef.instance.left = Math.round(
-            (right - left) / 2 + left
-          );
-          this.componentRef.instance.top = Math.round(top);
-          break;
-        }
-        case 'right': {
-          this.componentRef.instance.left = Math.round(right);
-          this.componentRef.instance.top = Math.round(top + (bottom - top) / 2);
-          break;
-        }
-        case 'left': {
-          this.componentRef.instance.left = Math.round(left);
-          this.componentRef.instance.top = Math.round(top + (bottom - top) / 2);
-          break;
-        }
-      }
-    }
+    // Attach tooltip portal to overlay
+    const tooltipRef: ComponentRef<TooltipComponent> =
+      this.overlayRef.attach(tooltipPortal);
+    // Pass content to tooltip component instance
+    tooltipRef.instance.text = this.text;
+
+    console.log('elementRef', this.elementRef);
+    console.log('overlayRef', this.overlayRef);
+
+    console.log('tooltip', tooltipRef, this.text);
   }
 
   @HostListener('mouseleave')
@@ -89,13 +75,11 @@ export class AddTooltipDirective {
 
   ngOnDestroy(): void {
     this.destroy();
+    this.overlayRef.dispose();
   }
 
   destroy(): void {
-    if (this.componentRef !== null) {
-      this.appRef.detachView(this.componentRef.hostView);
-      this.componentRef.destroy();
-      this.componentRef = null;
-    }
+    this.overlayRef.detach();
+    // this.overlayRef.dispose();
   }
 }
